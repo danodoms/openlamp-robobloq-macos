@@ -120,4 +120,29 @@ final class ProtocolTests: XCTestCase {
         XCTAssertNil(RGB(hex: "nope"))
         XCTAssertNil(RGB(hex: "12345"))
     }
+
+    func testHSBKnownValues() {
+        XCTAssertEqual(RGB(hue: 0, saturation: 1, brightness: 1), RGB(r: 255, g: 0, b: 0))
+        XCTAssertEqual(RGB(hue: 1.0 / 3, saturation: 1, brightness: 1), RGB(r: 0, g: 255, b: 0))
+        XCTAssertEqual(RGB(hue: 2.0 / 3, saturation: 1, brightness: 1), RGB(r: 0, g: 0, b: 255))
+        XCTAssertEqual(RGB(hue: 0.5, saturation: 0, brightness: 0), .black)
+        XCTAssertEqual(RGB(hue: 0.5, saturation: 0, brightness: 1), RGB(r: 255, g: 255, b: 255))
+    }
+
+    func testHSBRoundTrip() {
+        let colors = [
+            RGB(r: 255, g: 147, b: 41),
+            RGB(r: 1, g: 2, b: 3),
+            RGB(r: 128, g: 128, b: 128),
+            RGB(r: 255, g: 255, b: 255),
+            RGB(r: 0, g: 0, b: 0),
+        ]
+        for color in colors {
+            let hsb = color.hsb
+            XCTAssertEqual(
+                RGB(hue: hsb.hue, saturation: hsb.saturation, brightness: hsb.brightness),
+                color
+            )
+        }
+    }
 }

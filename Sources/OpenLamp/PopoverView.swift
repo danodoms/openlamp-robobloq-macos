@@ -4,6 +4,8 @@ import SwiftUI
 
 struct PopoverView: View {
     @EnvironmentObject private var model: AppModel
+    @State private var showsPicker = false
+    @State private var isHoveringColour = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -42,22 +44,51 @@ struct PopoverView: View {
                 }
             }
 
-            HStack(spacing: 10) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Colour")
-                        .font(.callout)
-                    Text(model.state.color.hex)
-                        .font(.caption2.monospaced())
-                        .foregroundStyle(.secondary)
+            Button {
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    showsPicker.toggle()
                 }
-                Spacer()
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(model.state.color.swiftUIColor)
-                    .frame(width: 48, height: 24)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 5)
-                            .strokeBorder(Color.primary.opacity(0.12))
+            } label: {
+                HStack(spacing: 10) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Colour")
+                            .font(.callout)
+                        Text(model.state.color.hex)
+                            .font(.caption2.monospaced())
+                            .foregroundStyle(.secondary)
                     }
+                    Spacer()
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(model.state.color.swiftUIColor)
+                        .frame(width: 48, height: 24)
+                    Image(systemName: "chevron.down")
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .rotationEffect(.degrees(showsPicker ? 180 : 0))
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 6)
+                .contentShape(RoundedRectangle(cornerRadius: 8))
+            }
+            .buttonStyle(.plain)
+            .background {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.primary.opacity(showsPicker ? 0.06 : (isHoveringColour ? 0.04 : 0.02)))
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 8)
+                    .strokeBorder(
+                        Color.primary.opacity(showsPicker ? 0.35 : (isHoveringColour ? 0.22 : 0.12)),
+                        lineWidth: 1
+                    )
+            }
+            .onHover { isHoveringColour = $0 }
+
+            if showsPicker {
+                ColorPickerPanel(color: model.state.color) { color in
+                    model.choose(color)
+                }
+                .transition(.opacity.combined(with: .move(edge: .top)))
             }
 
             HStack(spacing: 8) {
