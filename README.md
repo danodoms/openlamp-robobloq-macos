@@ -11,6 +11,10 @@ If you are looking for a SyncLight alternative on macOS — a way to keep a Robo
 
 Status: v1 is implemented and has been tested against the strip. Static colour only.
 
+<img src="Support/popover.png" width="380" alt="OpenLamp menu bar popover: connected Robobloq strip, four warm presets, live RGB channels, brightness slider and Turn Off">
+
+*The menu bar popover: presets, editable RGB, brightness and off.*
+
 ## Why this exists
 
 The Robobloq strip ships with **SyncLight**, an Electron app. Measured on a test Mac:
