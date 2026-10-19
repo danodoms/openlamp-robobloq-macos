@@ -21,9 +21,11 @@ The Robobloq strip ships with **SyncLight**, an Electron app. Measured on a test
 
 | | SyncLight | OpenRGB | OpenLamp (measured) |
 |---|---|---|---|
-| Memory | ~230 MB, 5 processes | 137–165 MB | 16 MB physical, 1 process |
+| Memory | ~230 MB, 5 processes | 137–165 MB | 16 MB physical footprint at idle, 1 process |
 | Idle CPU | ~3.4% | — | 0.0–0.1% |
 | Persistence | stays open and re-sends colour | profile keyed to a HID ID that changes per connect | re-sends colour on device arrival |
+
+OpenLamp's numbers are `footprint` physical footprint at idle (peak 17 MB), not RSS. Reproduce with `footprint -p $(pgrep -x OpenLamp)`.
 
 SyncLight works. It handles a strip with no onboard memory by staying open and re-sending state. But it does that with five processes, a GPU renderer, and a repeating wakeup.
 
