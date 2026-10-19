@@ -19,10 +19,9 @@ The Robobloq strip ships with **SyncLight**, an Electron app. Measured on a test
 |---|---|---|---|
 | Memory | ~230 MB, 5 processes | 137–165 MB | 16 MB physical, 1 process |
 | Idle CPU | ~3.4% | — | 0.0–0.1% |
-| Crashes observed | 5 in one afternoon | 4 in one day | — |
 | Persistence | stays open and re-sends colour | profile keyed to a HID ID that changes per connect | re-sends colour on device arrival |
 
-SyncLight works. It handles a strip with no onboard memory by staying open and re-sending state. But it does that with five processes, a GPU renderer, and a repeating wakeup, and it crashed five times in one afternoon during testing.
+SyncLight works. It handles a strip with no onboard memory by staying open and re-sending state. But it does that with five processes, a GPU renderer, and a repeating wakeup.
 
 OpenRGB is lighter than SyncLight but still heavy, and its model does not fit this device. It stores colour in a profile keyed to the HID location ID, which changes on every connection. Loading the profile succeeds, matches nothing, and silently applies nothing.
 
