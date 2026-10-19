@@ -42,8 +42,30 @@ struct PopoverView: View {
                 }
             }
 
-            ColorPicker("Colour", selection: colorBinding, supportsOpacity: false)
-                .font(.callout)
+            HStack(spacing: 10) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Colour")
+                        .font(.callout)
+                    Text(model.state.color.hex)
+                        .font(.caption2.monospaced())
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                RoundedRectangle(cornerRadius: 5)
+                    .fill(model.state.color.swiftUIColor)
+                    .frame(width: 48, height: 24)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 5)
+                            .strokeBorder(Color.primary.opacity(0.12))
+                    }
+            }
+
+            HStack(spacing: 8) {
+                channelField("R", binding: channelBinding(\.r))
+                channelField("G", binding: channelBinding(\.g))
+                channelField("B", binding: channelBinding(\.b))
+                Spacer()
+            }
 
             HStack(spacing: 8) {
                 Image(systemName: "sun.min")
@@ -79,10 +101,28 @@ struct PopoverView: View {
         .frame(width: 280)
     }
 
-    private var colorBinding: Binding<Color> {
+    private func channelField(_ label: String, binding: Binding<Int>) -> some View {
+        VStack(spacing: 2) {
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+            TextField(label, value: binding, format: .number)
+                .textFieldStyle(.roundedBorder)
+                .multilineTextAlignment(.center)
+                .labelsHidden()
+                .frame(width: 54)
+        }
+    }
+
+    private func channelBinding(_ keyPath: WritableKeyPath<RGB, UInt8>) -> Binding<Int> {
         Binding(
-            get: { model.state.color.swiftUIColor },
-            set: { model.choose(RGB(color: $0)) }
+            get: { Int(model.state.color[keyPath: keyPath]) },
+            set: { value in
+                var next = model.state
+                next.color[keyPath: keyPath] = UInt8(clamping: value)
+                next.isOn = true
+                model.state = next
+            }
         )
     }
 

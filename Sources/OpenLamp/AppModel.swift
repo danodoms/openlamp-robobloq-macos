@@ -87,13 +87,4 @@ extension RGB {
             blue: Double(b) / 255
         )
     }
-
-    init(color: Color) {
-        let ns = NSColor(color).usingColorSpace(.sRGB) ?? .white
-        self.init(
-            r: UInt8((min(max(ns.redComponent, 0), 1) * 255).rounded()),
-            g: UInt8((min(max(ns.greenComponent, 0), 1) * 255).rounded()),
-            b: UInt8((min(max(ns.blueComponent, 0), 1) * 255).rounded())
-        )
-    }
 }

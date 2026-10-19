@@ -30,7 +30,7 @@ OpenLamp takes the one part that matters — hold the HID device open and re-sen
 ## What it does
 
 - Static colour for the whole strip.
-- Four warm presets plus the system colour picker.
+- Four warm presets plus editable R, G and B values.
 - Brightness, remembered across launches.
 - Off, without quitting the app.
 - Menu bar only. No Dock icon, no window.
